@@ -1,35 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import axios from "axios";
 
-export default function Loginpage() {
+export default function Loginpage(props) {
   const input = {
     email: "",
     password: "",
   };
   const [inputData, setInputData] = useState(input);
+  const { next, setNext } = props;
 
   function handleChange(e) {
     setInputData({ ...inputData, [e.target.name]: e.target.value });
   }
-  async function handleSubmit() {
+  // useEffect(()=>{
+  //   console.log(next)
+  // },[])
+  function handleSubmit() {
     if (!inputData.email || !inputData.password) {
-      alert("Please fill in all fields");
+      alert("Please fill all input fields");
       return;
     }
-    e.preventDefault();
-
-    const axios = require("axios");
-    let data =
-      {email:"levitation@levitation.in",
-        password:"levitation"};
+    let data = { email: inputData.email, password: inputData.password };
 
     let config = {
-      method: "get",
+      method: "POST",
       maxBodyLength: Infinity,
-      url: "https://x8ki-letl-twmt.n7.xano.io/apidoc:XooRuQbs/",
+      url: "https://x8ki-letl-twmt.n7.xano.io/api:XooRuQbs/auth/login",
       headers: {
-        "Content-Type": "text/plain",
+        "Content-Type": "application/json",
       },
       data: data,
     };
@@ -37,11 +36,13 @@ export default function Loginpage() {
     axios
       .request(config)
       .then((response) => {
+          setNext(true);
         console.log(JSON.stringify(response.data));
       })
       .catch((error) => {
-        console.log(error);
+        alert(error);
       });
+      setInputData(input);
   }
   return (
     <>
@@ -92,8 +93,8 @@ export default function Loginpage() {
 
             <div>
               <button
-                type="submit"
-                // onClick={handleSubmit}
+                type="button"
+                onClick={handleSubmit}
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Log in
@@ -103,7 +104,7 @@ export default function Loginpage() {
             <div className="md:flex justify-center space-x-2 text-sm">
               <p>Click Forgot password ?</p>
               <Link
-                href="#"
+                href="/forgotpassword"
                 className="font-semibold text-indigo-600 hover:text-indigo-500 hover:underline"
               >
                 Forgot password

@@ -1,9 +1,10 @@
-import Loginpage from '../components/loginpage'
+import { useState } from "react";
+import Loginpage from "../components/loginpage";
+import Fulladresspage from "@/components/fulladresspage";
 
 export default function Home() {
-  return (
-    <>
-      <Loginpage />
-    </>
-  )
+  const [next, setNext] = useState(false);
+  return <>
+  { next ? <Fulladresspage />:<Loginpage setNext={setNext}/> }
+  </>
 }
